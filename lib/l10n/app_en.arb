@@ -1,0 +1,13 @@
+{
+  "helloWorld": "Hello World!",
+  "@helloWorld": {
+    "description": "The conventional newborn programmer greeting"
+  },
+  "description": "The ISSATSo survey is a mobile application that helps us gather your opinions and develop our university.\nTogether we are stronger",
+  "issatso":"ISSATSo Survey",
+  "getstarted":"Get Started",
+  "email":"Write your email here:",
+  "pwd":"Write your password here:",
+  "forgot":"click here if you forgot your password !",
+  "login": "Login"
+}
