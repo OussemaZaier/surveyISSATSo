@@ -23,6 +23,9 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: Color(0xFF101A30),
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(
+            parent: NeverScrollableScrollPhysics(),
+          ),
           child: ConstrainedBox(
             constraints:
                 BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
@@ -43,7 +46,6 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.only(
                     left: 20.0,
                     right: 20.0,
-                    bottom: 20.0,
                   ),
                   child: Container(
                     width: MediaQuery.of(context).size.width,
@@ -77,6 +79,9 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                   ),
+                ),
+                const SizedBox(
+                  height: 20.0,
                 ),
               ],
             ),

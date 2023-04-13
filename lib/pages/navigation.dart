@@ -1,6 +1,8 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:survey/pages/feedback.dart';
 import 'package:survey/pages/homePage.dart';
+import 'package:survey/pages/settings.dart';
 
 class Navigation extends StatefulWidget {
   const Navigation({Key? key}) : super(key: key);
@@ -74,14 +76,10 @@ class _NavigationState extends State<Navigation> {
             });
           },
           children: [
-            Container(
-              color: Colors.red,
-            ),
+            FeedbackScreen(),
             //Main
             HomePage(),
-            Container(
-              color: Colors.orange,
-            ),
+            Settings(),
           ],
         ),
       ),

@@ -1,33 +1,36 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class Button extends StatelessWidget {
-  Button({
-    Key? key,
-    required this.text,
-    required this.fct,
-    this.color = const Color.fromRGBO(2, 136, 209, 1),
-  }) : super(key: key);
+class SurveyButton extends StatefulWidget {
+  SurveyButton({Key? key, required this.text, required this.fct})
+      : super(key: key);
   String text;
   VoidCallback fct;
-  Color color;
+
+  @override
+  State<SurveyButton> createState() => _SurveyButtonState();
+}
+
+class _SurveyButtonState extends State<SurveyButton> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: fct,
+      onTap: () {
+        setState(() {});
+        widget.fct();
+      },
       child: Container(
         width: MediaQuery.of(context).size.width / 2,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          color: color,
-        ),
+        // decoration: BoxDecoration(
+        //   borderRadius: BorderRadius.circular(30),
+        //   color: Colors.lightBlue.shade700,
+        // ),
         child: Center(
             child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Text(
-            text,
+            widget.text,
             style: TextStyle(
               fontFamily: 'Poppins',
               fontWeight: FontWeight.w500,

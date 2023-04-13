@@ -9,5 +9,13 @@
   "email":"Write your email here:",
   "pwd":"Write your password here:",
   "forgot":"click here if you forgot your password !",
-  "login": "Login"
+  "login": "Login",
+  "settings":"SETTINGS",
+  "account":"Account",
+  "notification":"Notifications",
+  "privacy":"Privacy & Security",
+  "support":"Help and Support",
+  "about":"About",
+  "logout":"LogOut",
+  "language":"Language"
 }

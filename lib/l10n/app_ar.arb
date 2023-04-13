@@ -1,3 +1,13 @@
 {
-    "helloWorld": "¡Hola Mundo!"
+    "helloWorld": "¡Hola Mundo!",
+    "account":"الحساب",
+    "notification":"إشعارات",
+    "privacy":"الخصوصية والأمن",
+    "support":"مساعدة و دعم",
+    "about":"حول التطبيق",
+    "logout":"تسجيل الخروج",
+    "settings":"الإعدادات",
+    "noData": "لا يوجد",
+    "saleDate": "تخفيض صالح الى",
+    "language":"اللغة"
 }

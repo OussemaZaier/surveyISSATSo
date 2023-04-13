@@ -1,3 +1,13 @@
 {
-    "helloWorld": "¡Hola Mundo!"
+    "helloWorld": "¡Hola Mundo!",
+    "account":"Compte",
+    "notification":"Notifications",
+    "privacy":"sécurité",
+    "support":"Aide et soutien",
+    "about":"À propos",
+    "logout":"Déconnecter",
+    "settings":"RÉGLAGES",
+    "noData":"pas d'informations à afficher",
+    "saleDate":"promotion jusqu'au",
+    "language":"Langue"
 }

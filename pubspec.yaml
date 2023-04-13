@@ -40,6 +40,8 @@ dependencies:
   flutter_statusbarcolor_ns: ^0.5.0
   sticky_headers: ^0.3.0+2
   curved_navigation_bar: ^1.0.3
+  swipeable_card_stack: ^0.0.5
+  art_sweetalert: ^0.0.5
 
 dev_dependencies:
   flutter_test:
