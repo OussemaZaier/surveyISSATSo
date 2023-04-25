@@ -2,9 +2,9 @@ class FeedbackType {
   static List<String> feedbackType = [
     "Harassment",
     "Bullying",
+    "Mistake in your grade",
     "Slow service",
-    "Mistake in your grade",
-    "Mistake in your grade",
-    "Mistake in your grade",
+    "Disponibility of staff",
+    "Library schedule",
   ];
 }

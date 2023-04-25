@@ -51,7 +51,7 @@ class _NavigationState extends State<Navigation> {
         index: _currentIndex,
         items: <Widget>[
           Icon(
-            Icons.home,
+            Icons.feedback_rounded,
             size: 30,
             color: _currentIndex != 0 ? navigationColor : Colors.white,
           ),
