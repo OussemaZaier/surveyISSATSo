@@ -1,17 +1,32 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:survey/pages/homePage.dart';
 import 'package:survey/pages/loginPage.dart';
+import 'package:survey/pages/navigation.dart';
+import 'package:survey/service/Auth.dart';
+import 'package:survey/service/IAuthRepository.dart';
+import "firebase_options.dart";
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -31,8 +46,13 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final IAuthRepository authRepository = AuthRepository();
     FlutterStatusbarcolor.setStatusBarColor(Color(0xFF101A30));
     return MaterialApp(
+      routes: {
+        "/home": (context) => const Navigation(),
+        "/first": (context) => const MyApp()
+      },
       title: 'Flutter Demo',
       localizationsDelegates: [
         AppLocalizations.delegate, // Add this line
@@ -53,15 +73,9 @@ class _MyAppState extends State<MyApp> {
         splash: Expanded(
           child: Column(
             children: [
-              // Image.asset(
-              //   'assets/images/leaf.png',
-              //   width: 100,
-              //   height: 100,
-              // ),
               Text(
                 'ISSATSo',
                 style: TextStyle(
-                    //fontFamily: 'Falling',
                     fontSize: 60,
                     letterSpacing: -4,
                     fontWeight: FontWeight.w100,
@@ -70,10 +84,16 @@ class _MyAppState extends State<MyApp> {
             ],
           ),
         ),
-        //nextScreen: verified ? Navigation() : HomePage(),
-        nextScreen: LoginPage(),
-        //nextScreen: HomePage(),
-        // detailsPage(),
+        nextScreen: StreamBuilder<User>(
+          stream: authRepository.getAuthState(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData && snapshot.data != null) {
+              return Navigation();
+            } else {
+              return LoginPage();
+            }
+          },
+        ),
         splashTransition: SplashTransition.fadeTransition,
         pageTransitionType: PageTransitionType.leftToRight,
         duration: 4000,

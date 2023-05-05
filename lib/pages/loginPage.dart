@@ -33,6 +33,7 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Expanded(
+                  flex: 1,
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Image.asset(
@@ -48,6 +49,8 @@ class _LoginPageState extends State<LoginPage> {
                     right: 20.0,
                   ),
                   child: Container(
+                    margin: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).size.height / 30),
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),

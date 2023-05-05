@@ -31,12 +31,14 @@ class _SurveyDetailState extends State<SurveyDetail> {
               SurveyCard(
                 key: Key('A'),
                 cardController: _cardController,
-                question: 'test1',
+                question:
+                    'How satisfied are you with the quality of education provided by your university?',
                 choices: [
-                  '4',
-                  '5',
-                  '6',
-                  '7',
+                  'Extremely satisfied',
+                  'Very satisfied',
+                  'Moderately satisfied',
+                  'Slightly satisfied',
+                  "Not at all satisfied"
                 ],
               ),
               SurveyCard(

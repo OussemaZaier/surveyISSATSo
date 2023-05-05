@@ -41,7 +41,6 @@ class _NavigationState extends State<Navigation> {
         backgroundColor: Colors.white,
         color: Colors.white,
         buttonBackgroundColor: Colors.blue.shade900,
-        //  Colors.white,
         animationDuration: Duration(
           milliseconds: 300,
         ),

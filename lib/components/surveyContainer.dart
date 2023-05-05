@@ -56,30 +56,34 @@ class SurveyContainer extends StatelessWidget {
                 color: color.shade700,
               ),
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 20.0,
-                    color: Color(0xFF101A30),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Flexible(
+                    child: Text(
+                      name,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 20.0,
+                        color: Color(0xFF101A30),
+                      ),
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 5.0,
-                ),
-                Text(
-                  '${questionNumber} questions',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 15.0,
-                    color: Color(0x6F101A30),
+                  SizedBox(
+                    height: 5.0,
                   ),
-                ),
-              ],
+                  Text(
+                    '${questionNumber} questions',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15.0,
+                      color: Color(0x6F101A30),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

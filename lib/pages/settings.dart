@@ -6,6 +6,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:survey/components/settingItem.dart';
 import 'package:survey/main.dart';
 import 'package:survey/models/language.dart';
+import 'package:survey/pages/navigation.dart';
+import 'package:survey/service/Auth.dart';
+import 'package:survey/service/IAuthRepository.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -43,14 +46,6 @@ class _SettingsState extends State<Settings> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  settingItem(
-                    iconName: Icons.person_outline,
-                    fct: () {
-                      print('clicked 1');
-                    },
-                    name: AppLocalizations.of(context)!.account,
-                    logOut: false,
-                  ),
                   settingItem(
                     iconName: Icons.language_outlined,
                     fct: () {
@@ -97,33 +92,11 @@ class _SettingsState extends State<Settings> {
                     logOut: false,
                   ),
                   settingItem(
-                    iconName: Icons.lock_outline,
-                    fct: () {
-                      print('clicked 2');
-                    },
-                    name: AppLocalizations.of(context)!.privacy,
-                    logOut: false,
-                  ),
-                  settingItem(
                     iconName: Icons.support_agent,
                     fct: () {
                       print('clicked 2');
                     },
                     name: AppLocalizations.of(context)!.support,
-                    logOut: false,
-                  ),
-                  settingItem(
-                    iconName: Icons.help_outline,
-                    fct: () {
-                      ArtSweetAlert.show(
-                        context: context,
-                        artDialogArgs: ArtDialogArgs(
-                            title: "ISSATSo Survey",
-                            text:
-                                "TOGETHER we are stronger !!!\nbla bla blaaaaaa blaaa blaa bla bla created by pechpech team.\npechpech for the rescue"),
-                      );
-                    },
-                    name: AppLocalizations.of(context)!.about,
                     logOut: false,
                   ),
                   SizedBox(
@@ -132,7 +105,8 @@ class _SettingsState extends State<Settings> {
                   settingItem(
                     iconName: Icons.logout,
                     fct: () {
-                      print('logout');
+                      AuthRepository().logout();
+                      Navigator.of(context).popAndPushNamed('/first');
                     },
                     name: AppLocalizations.of(context)!.logout,
                     logOut: true,

@@ -4,9 +4,10 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:survey/components/buttonHome.dart';
-import 'package:survey/components/clicked.dart';
 import 'package:survey/components/surveyCardButton.dart';
 import 'package:swipeable_card_stack/swipe_controller.dart';
+
+import 'options.dart';
 
 class SurveyCard extends StatefulWidget {
   SwipeableCardSectionController cardController;
@@ -30,20 +31,19 @@ class _SurveyCardState extends State<SurveyCard> {
   bool clicked = false;
   void onMyFieldChange(Color newValue) {
     setState(() {
-      color = newValue;
-      if (clicked == false) {
-        clicked = true;
-      }
+      clicked ? color = newValue : color = Color.fromRGBO(170, 170, 170, 0.8);
+      clicked = !clicked;
     });
   }
 
   Widget getQuestionWidgets(List<String> strings) {
-    return new Column(
+    return ListView(
         children: strings
             .map(
-              (item) => new questionContainer(
+              (item) => Options(
                 color: color,
                 onMyFieldChange: onMyFieldChange,
+                text: item,
               ),
             )
             .toList());
@@ -85,7 +85,6 @@ class _SurveyCardState extends State<SurveyCard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            // AppLocalizations.of(context)!.pwd,
                             'Select an answer',
                             style: TextStyle(
                               fontFamily: 'Poppins',
@@ -108,7 +107,7 @@ class _SurveyCardState extends State<SurveyCard> {
                               Flexible(
                                 child: Text(
                                   // AppLocalizations.of(context)!.pwd,
-                                  '${widget.question} your question here?',
+                                  '${widget.question}',
                                   style: TextStyle(
                                     fontFamily: 'Poppins',
                                     fontSize: 23.0,
@@ -138,7 +137,7 @@ class _SurveyCardState extends State<SurveyCard> {
                               fct: () {
                                 setState(() {
                                   //TODO: back auto
-                                  //widget.cardController.addItem();
+                                  // widget.cardController.addItem();
                                 });
                               }),
                         ),
@@ -153,7 +152,7 @@ class _SurveyCardState extends State<SurveyCard> {
                               if (clicked) {
                                 setState(() {
                                   //TODO: swipe auto
-                                  widget.cardController.submitButton();
+                                  // widget.cardController.submitButton();
                                 });
                               }
                             },
@@ -165,82 +164,6 @@ class _SurveyCardState extends State<SurveyCard> {
                 )),
           )
         ],
-      ),
-    );
-  }
-}
-
-class questionContainer extends StatefulWidget {
-  questionContainer({
-    Key? key,
-    required this.color,
-    required this.onMyFieldChange,
-  }) : super(key: key);
-  final Color color;
-  final ValueChanged<Color> onMyFieldChange;
-  @override
-  State<questionContainer> createState() => _questionContainerState();
-}
-
-class _questionContainerState extends State<questionContainer> {
-  Clicked _clicked = new Clicked(false);
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: InkWell(
-        onTap: () {
-          setState(() {
-            _clicked.setClicked(true);
-            widget.onMyFieldChange(const Color.fromRGBO(2, 136, 209, 1));
-          });
-        },
-        child: Container(
-          height: 100,
-          margin: EdgeInsets.fromLTRB(20.0, 0, 20.0, 20.0),
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.grey.shade600, width: 1.0),
-            color: _clicked.getClicked()
-                ? Colors.blue.shade200
-                : Colors.transparent,
-            boxShadow: _clicked.getClicked()
-                ? [
-                    BoxShadow(
-                      color: Colors.blue.withAlpha(130),
-                      blurRadius: 7.0,
-                      spreadRadius: 2.0,
-                      offset: Offset(
-                        0.0,
-                        0.0,
-                      ),
-                    ),
-                  ]
-                : null,
-          ),
-          child: Row(
-            children: [
-              SizedBox(
-                width: 15.0,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.grey.shade600, width: 1.0),
-                  color: _clicked.getClicked()
-                      ? Colors.blue.shade700
-                      : Colors.transparent,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(3.0),
-                  child: Icon(
-                    Icons.check,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }
