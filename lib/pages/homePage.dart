@@ -7,6 +7,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:survey/components/surveyContainer.dart';
 import 'package:survey/service/ImFirestore.dart';
+import 'package:survey/service/Storage.dart';
 import 'dart:math' as math;
 
 import '../components/header.dart';
@@ -22,6 +23,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final _fireRep = FirestoreRepository();
   final _random = Random();
+  final storage = new Storage();
 
   @override
   Widget build(BuildContext context) {
@@ -51,52 +53,75 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(
                   height: 10.0,
                 ),
-                // FutureBuilder(initialData: [],future: ,builder: );
+                FutureBuilder<String>(
+                    initialData: "",
+                    future: storage.getFiliere(),
+                    builder: (context, AsyncSnapshot<String> snapshot) {
+                      switch (snapshot.connectionState) {
+                        // case ConnectionState.waiting:
+                        //   return Center(
+                        //     child: const CircularProgressIndicator(),
+                        //   );
+                        case ConnectionState.done:
+                          return FutureBuilder<List<Object>>(
+                              future:
+                                  _fireRep.getCustomForms('forms', 'questions'),
+                              builder: (context, AsyncSnapshot<List> snapshot) {
+                                switch (snapshot.connectionState) {
+                                  // case ConnectionState.waiting:
+                                  //   return Flexible(
+                                  //     child: ListView.builder(
+                                  //       shrinkWrap: true,
+                                  //       itemBuilder: (context, index) =>
+                                  //           CardSkelton(),
+                                  //       itemCount: 5,
+                                  //     ),
+                                  //   );
+                                  case ConnectionState.done:
+                                    if (snapshot.data!.isNotEmpty) {
+                                      return Flexible(
+                                        child: ListView.builder(
+                                          shrinkWrap: true,
+                                          scrollDirection: Axis.vertical,
+                                          itemCount: snapshot.data!.length,
+                                          itemBuilder: (context, index) {
+                                            // if (snapshot.data![index].deadline
 
-                FutureBuilder(
-                    future: _fireRep.getCustomForms('forms', 'questions'),
-                    builder: (context, AsyncSnapshot<List> snapshot) {
-                      if (snapshot.data == null) {
-                        return Flexible(
-                          child: ListView.separated(
-                            shrinkWrap: true,
-                            itemBuilder: (BuildContext context, int index) =>
-                                const CardSkelton(),
-                            itemCount: 5,
-                            separatorBuilder:
-                                (BuildContext context, int index) =>
-                                    const SizedBox(
-                              height: 16,
-                            ),
-                          ),
-                        );
-                      } else {
-                        // return
-                        return Flexible(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            itemCount: snapshot.data!.length,
-                            itemBuilder: (context, index) {
-                              if (snapshot.data![index].deadline
-                                      .toDate()
-                                      .millisecondsSinceEpoch >
-                                  Timestamp.now()
-                                      .toDate()
-                                      .millisecondsSinceEpoch) {
-                                return SurveyContainer(
-                                    color: Colors.primaries[_random
-                                        .nextInt(Colors.primaries.length)],
-                                    icon: Icons.format_quote_rounded,
-                                    name: snapshot.data![index].type,
-                                    questionNumber:
-                                        snapshot.data![index].numQuestion);
-                              }
-                            },
-                          ),
-                        );
+                                            return SurveyContainer(
+                                                id: snapshot.data![index].id,
+                                                color: Colors.primaries[
+                                                    _random.nextInt(Colors
+                                                        .primaries.length)],
+                                                icon:
+                                                    Icons.format_quote_rounded,
+                                                name:
+                                                    snapshot.data![index].type,
+                                                questionNumber: snapshot
+                                                    .data![index].numQuestion);
+                                          },
+                                        ),
+                                      );
+                                    } else {
+                                      return const Center(
+                                          child: Text(
+                                              "No surveys available right now"));
+                                    }
+                                  default:
+                                    return Flexible(
+                                      child: ListView.builder(
+                                        shrinkWrap: true,
+                                        itemBuilder: (context, index) =>
+                                            CardSkelton(),
+                                        itemCount: 5,
+                                      ),
+                                    );
+                                }
+                              });
+                        default:
+                          return Center(
+                              child: const CircularProgressIndicator());
                       }
-                    }),
+                    })
               ],
             ),
           ),
@@ -116,6 +141,7 @@ class CardSkelton extends StatelessWidget {
     return Skelton(
       height: 90,
       width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.only(bottom: 25),
       child: Row(
         children: [
           const Skelton(

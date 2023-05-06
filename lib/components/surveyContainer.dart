@@ -3,24 +3,26 @@ import 'package:survey/components/card.dart';
 import 'package:survey/components/surveyDetail.dart';
 
 class SurveyContainer extends StatelessWidget {
-  SurveyContainer({
-    Key? key,
-    required this.color,
-    required this.icon,
-    required this.name,
-    required this.questionNumber,
-  }) : super(key: key);
+  SurveyContainer(
+      {Key? key,
+      required this.color,
+      required this.icon,
+      required this.name,
+      required this.questionNumber,
+      required this.id})
+      : super(key: key);
   MaterialColor color;
   IconData icon;
   String name;
   int questionNumber;
+  String id;
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (() {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: ((context) => SurveyDetail()),
+            builder: ((context) => SurveyDetail(id: this.id)),
           ),
         );
       }),

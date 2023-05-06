@@ -62,7 +62,7 @@ class Header extends StatelessWidget {
                 initialData: Student("", ""),
                 future: fireRep.getStudentByEmail("students"),
                 builder: (context, AsyncSnapshot<Student> student) {
-                  if (student.data!.name.isEmpty) {
+                  if (student.data == null || student.data!.name.isEmpty) {
                     return const Center(child: CircularProgressIndicator());
                   } else {
                     return Center(

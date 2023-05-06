@@ -10,8 +10,11 @@ import 'package:survey/pages/navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:survey/service/Auth.dart';
 import 'package:survey/service/IAuthRepository.dart';
+import 'package:survey/service/ImFirestore.dart';
+import 'package:survey/service/Storage.dart';
 
 import '../firebase_options.dart';
+import '../models/Student.dart';
 
 class LoginWidget extends StatefulWidget {
   const LoginWidget({
@@ -186,8 +189,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                                             child: Text('OK'),
                                           )
                                         ]));
-                          }, (user) {
-                            Navigator.of(context).popAndPushNamed('/home');
+                          }, (user) async {
+                            // Navigator.of(context).popAndPushNamed('/home');
                           });
                         });
                       }

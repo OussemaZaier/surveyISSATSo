@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:survey/service/AuthFailure.dart';
 import 'package:survey/service/Ifirestore.dart';
 import 'package:survey/service/ImFirestore.dart';
+import 'package:survey/service/Storage.dart';
 
 import '../models/Student.dart';
 import 'IAuthRepository.dart';
@@ -11,10 +14,13 @@ import 'IAuthRepository.dart';
 class AuthRepository implements IAuthRepository {
   final _firebaseAuth = FirebaseAuth.instance;
   final secureStorage = const FlutterSecureStorage();
-
+  final _storage = Storage();
   @override
   Future<Either<AuthFailure, User>> login(String email, String password) async {
     // Authenticate user using Firebase Authentication
+
+    final Student student;
+
     try {
       final UserCredential userCredential =
           await _firebaseAuth.signInWithEmailAndPassword(
@@ -23,6 +29,12 @@ class AuthRepository implements IAuthRepository {
       );
       await secureStorage.write(
           key: 'token', value: userCredential.user!.email);
+
+      student = await FirestoreRepository()
+          .getStudentByEmail('students', id: userCredential.user!.email);
+      Storage().saveFiliere(student.filiere);
+      print(await Storage().getFiliere());
+      // Timer(const Duration(seconds: 10), () {});
       return right(userCredential.user!);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found' || e.code == 'wrong-password') {

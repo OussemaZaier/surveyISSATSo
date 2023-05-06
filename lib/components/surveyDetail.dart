@@ -5,7 +5,8 @@ import 'package:survey/components/card.dart';
 import 'package:swipeable_card_stack/swipeable_card_stack.dart';
 
 class SurveyDetail extends StatefulWidget {
-  const SurveyDetail({Key? key}) : super(key: key);
+  final String id;
+  const SurveyDetail({Key? key, required this.id}) : super(key: key);
 
   @override
   State<SurveyDetail> createState() => _SurveyDetailState();
@@ -25,6 +26,7 @@ class _SurveyDetailState extends State<SurveyDetail> {
           SwipeableCardsSection(
             cardHeightTopMul: 0.9,
             cardController: _cardController,
+
             context: context,
             //add the first 3 cards (widgets)
             items: [
@@ -77,13 +79,13 @@ class _SurveyDetailState extends State<SurveyDetail> {
               //   ),
               // );
               //auto swipe check
-              // _cardController.submitButton();
+              _cardController.submitButton();
               //Take action on the swiped widget based on the direction of swipe
               //Return false to not animate cards
               print(index);
             },
-            //
-            enableSwipeUp: true,
+
+            enableSwipeUp: false,
             enableSwipeDown: false,
           ),
         ],
