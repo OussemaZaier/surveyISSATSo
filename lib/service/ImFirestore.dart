@@ -1,18 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:survey/models/Student.dart';
+import 'package:survey/models/answer.dart';
 import 'package:survey/models/forms.dart';
 import 'package:survey/models/question.dart';
 import 'package:survey/service/Ifirestore.dart';
 import 'package:survey/service/Storage.dart';
+
+import '../models/problem.dart';
 
 class FirestoreRepository implements IFirestore {
   final db = FirebaseFirestore.instance;
 
   @override
   Future<Student> getStudentByEmail(String collection, {String? id}) async {
-    print("1");
-
     id = await Storage().getId();
     final ref = db.collection(collection).doc(id).get();
     Student student = await ref.then((value) {
@@ -29,7 +30,6 @@ class FirestoreRepository implements IFirestore {
     String subCollection,
   ) async {
     List<Form> form = [];
-    print("2");
     String fl = await Storage().getFiliere();
     form = await db
         .collection('forms')
@@ -46,8 +46,6 @@ class FirestoreRepository implements IFirestore {
                 .get();
             forme.numQuestion = len.size;
             form.add(forme);
-
-            // print(forme);
           }
           return form;
         });
@@ -65,10 +63,44 @@ class FirestoreRepository implements IFirestore {
         .get()
         .then((value) {
       for (doc in value.docs) {
-        questions.add(doc);
+        questions.add(
+            Question.fromJson(doc.id, doc.data(), doc.data()['options'] ?? []));
       }
       return questions;
     });
     return questions;
+  }
+
+  @override
+  Future<String> addAnswer(Answer answer) async {
+    // TODO: implement addAnswer
+    String respond;
+    try {
+      await db
+          .collection("forms")
+          .doc(answer.formId)
+          .collection('questions')
+          .doc(answer.questionId)
+          .collection('answers')
+          .add({'answer': answer.answer, 'filiere': answer.filiere});
+      return 'form added successfully';
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  @override
+  Future report(Problem problem) async {
+    try {
+      String id = await Storage().getId();
+      await db.collection('students').doc(id).collection('reports').add({
+        'topic': problem.topic,
+        'description': problem.description,
+        'date': DateTime.now()
+      });
+      return 'repoert added successfully';
+    } catch (e) {
+      return e.toString();
+    }
   }
 }

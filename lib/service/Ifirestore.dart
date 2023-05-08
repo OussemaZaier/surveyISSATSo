@@ -1,3 +1,5 @@
+import 'package:survey/models/answer.dart';
+import 'package:survey/models/problem.dart';
 import 'package:survey/models/question.dart';
 
 import '../models/Student.dart';
@@ -9,5 +11,7 @@ abstract class IFirestore {
     String collectionName,
     String subCollections,
   );
-  Future<List<Question>> getQuestions(String id);
+  getQuestions(String id);
+  addAnswer(Answer answer);
+  report(Problem prob);
 }

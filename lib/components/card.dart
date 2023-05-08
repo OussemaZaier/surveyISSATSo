@@ -13,7 +13,7 @@ class SurveyCard extends StatefulWidget {
   SwipeableCardSectionController cardController;
 
   String question;
-
+  bool multiSelect;
   List<String> choices;
 
   SurveyCard({
@@ -21,6 +21,7 @@ class SurveyCard extends StatefulWidget {
     required this.cardController,
     required this.question,
     required this.choices,
+    required this.multiSelect,
   }) : super(key: key);
   @override
   State<SurveyCard> createState() => _SurveyCardState();
@@ -31,8 +32,10 @@ class _SurveyCardState extends State<SurveyCard> {
   bool clicked = false;
   void onMyFieldChange(Color newValue) {
     setState(() {
-      clicked ? color = newValue : color = Color.fromRGBO(170, 170, 170, 0.8);
-      clicked = !clicked;
+      color = newValue;
+      if (clicked == false) {
+        clicked = true;
+      }
     });
   }
 
@@ -42,6 +45,7 @@ class _SurveyCardState extends State<SurveyCard> {
             .map(
               (item) => Options(
                 color: color,
+                multiSelect: widget.multiSelect,
                 onMyFieldChange: onMyFieldChange,
                 text: item,
               ),
@@ -110,7 +114,7 @@ class _SurveyCardState extends State<SurveyCard> {
                                   '${widget.question}',
                                   style: TextStyle(
                                     fontFamily: 'Poppins',
-                                    fontSize: 23.0,
+                                    fontSize: 20.0,
                                     fontWeight: FontWeight.w700,
                                   ),
                                 ),
@@ -119,9 +123,6 @@ class _SurveyCardState extends State<SurveyCard> {
                           ),
                         ],
                       ),
-                    ),
-                    SizedBox(
-                      height: 30.0,
                     ),
                     Expanded(
                       child: getQuestionWidgets(widget.choices),
@@ -152,7 +153,7 @@ class _SurveyCardState extends State<SurveyCard> {
                               if (clicked) {
                                 setState(() {
                                   //TODO: swipe auto
-                                  // widget.cardController.submitButton();
+                                  widget.cardController.submitButton();
                                 });
                               }
                             },

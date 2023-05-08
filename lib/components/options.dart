@@ -7,11 +7,14 @@ class Options extends StatefulWidget {
     Key? key,
     required this.color,
     required this.onMyFieldChange,
+    required this.multiSelect,
     required this.text,
   }) : super(key: key);
   final Color color;
+
   final ValueChanged<Color> onMyFieldChange;
   final String text;
+  final bool multiSelect;
   @override
   State<Options> createState() => _OptionsState();
 }

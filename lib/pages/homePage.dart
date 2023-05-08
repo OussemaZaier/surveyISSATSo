@@ -101,10 +101,16 @@ class _HomePageState extends State<HomePage> {
                                           },
                                         ),
                                       );
+                                    } else if (snapshot.hasError) {
+                                      return const Center(
+                                        child: Text(
+                                            "an Error occured please try again later"),
+                                      );
                                     } else {
                                       return const Center(
-                                          child: Text(
-                                              "No surveys available right now"));
+                                        child: Text(
+                                            "No surveys available right now"),
+                                      );
                                     }
                                   default:
                                     return Flexible(

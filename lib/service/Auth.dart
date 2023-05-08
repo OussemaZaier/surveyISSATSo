@@ -33,8 +33,6 @@ class AuthRepository implements IAuthRepository {
       student = await FirestoreRepository()
           .getStudentByEmail('students', id: userCredential.user!.email);
       Storage().saveFiliere(student.filiere);
-      print(await Storage().getFiliere());
-      // Timer(const Duration(seconds: 10), () {});
       return right(userCredential.user!);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found' || e.code == 'wrong-password') {

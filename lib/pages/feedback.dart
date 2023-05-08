@@ -1,10 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:survey/components/buttonHome.dart';
-import 'package:survey/components/clicked.dart';
+import '../models/problem.dart';
 import 'package:survey/models/feedbackType.dart';
-import 'package:survey/models/scale.dart';
+import 'package:survey/service/ImFirestore.dart';
 
 class FeedbackScreen extends StatefulWidget {
   const FeedbackScreen({Key? key}) : super(key: key);
@@ -16,11 +15,12 @@ class FeedbackScreen extends StatefulWidget {
 Color color = Colors.blue.shade200;
 int numberOfSelectedTiles = 0;
 
+List<String> topic = [];
+
 class _FeedbackScreenState extends State<FeedbackScreen> {
   @override
   Widget build(BuildContext context) {
     List<String> feedbackType = FeedbackType.feedbackType;
-
     _changeColor(int val) {
       numberOfSelectedTiles += val;
       if (numberOfSelectedTiles < 0) {
@@ -36,21 +36,43 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       }
     }
 
+    final _controller = TextEditingController();
     return Scaffold(
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           ChooseTale(
+            topic,
             feedbackType: feedbackType,
             fct: _changeColor,
           ),
+          Text(
+            'Provide more detail',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontFamily: 'Poppins',
+            ),
+          ),
           Expanded(
-            child: TextField(),
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 10),
+              child: TextField(
+                controller: _controller,
+              ),
+            ),
           ),
-          SubmitButton(
-            color: color,
-          ),
-          SizedBox(
-            height: 10.0,
+          Flexible(
+            child: SubmitButton(
+                color: color,
+                function: () {
+                  FirestoreRepository().report(Problem(
+                      topic: topic, description: _controller.value.text));
+                  _controller.clear();
+                  setState(() {
+                    topic.clear();
+                    color = Colors.grey.shade400.withAlpha(100);
+                  });
+                }),
           ),
         ],
       ),
@@ -61,15 +83,15 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
 class SubmitButton extends StatelessWidget {
   SubmitButton({
     Key? key,
+    required this.function,
     required this.color,
   }) : super(key: key);
   Color color;
+  Function() function;
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        print(color);
-      },
+      onTap: function,
       child: Container(
         color: Colors.white,
         child: Container(
@@ -94,13 +116,15 @@ class SubmitButton extends StatelessWidget {
 }
 
 class ChooseTale extends StatelessWidget {
-  ChooseTale({
+  ChooseTale(
+    this.selected, {
     Key? key,
     required this.feedbackType,
     required this.fct,
   }) : super(key: key);
 
   List<String> feedbackType;
+  List<String> selected;
   Function(int val) fct;
 
   @override
@@ -137,6 +161,7 @@ class ChooseTale extends StatelessWidget {
             children: [
               for (String e in feedbackType)
                 FeedbackTale(
+                  selected,
                   feedbackType: e,
                   index: feedbackType.indexOf(e),
                   fct: fct,
@@ -150,7 +175,8 @@ class ChooseTale extends StatelessWidget {
 }
 
 class FeedbackTale extends StatefulWidget {
-  FeedbackTale({
+  FeedbackTale(
+    this.selected, {
     Key? key,
     required this.feedbackType,
     required this.index,
@@ -160,6 +186,7 @@ class FeedbackTale extends StatefulWidget {
   String feedbackType;
   int index;
   Function(int val) fct;
+  List<String> selected;
 
   @override
   State<FeedbackTale> createState() => _FeedbackTaleState();
@@ -179,10 +206,15 @@ class _FeedbackTaleState extends State<FeedbackTale> {
               if (containerColor != Colors.blue.shade900) {
                 containerColor = Colors.blue.shade900;
                 textColor = Colors.white;
+                widget.selected.add(widget.feedbackType);
+                print('${widget.feedbackType} ${widget.selected}');
                 widget.fct(1);
               } else {
                 containerColor = Colors.grey.shade400.withAlpha(100);
                 textColor = Colors.grey.shade700;
+                widget.selected.remove(widget.feedbackType);
+                print('${widget.feedbackType} ${widget.selected}');
+
                 widget.fct(-1);
               }
             });
